@@ -1,10 +1,9 @@
 ﻿namespace SportClubs.Entities
 {
-    public class Club
+    public class Department
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string? Description { get; set; }
-        public float TeacherId { get; set; }
+        public Faculty FacultyId { get; set; }
     }
 }
