@@ -10,5 +10,6 @@
         public string Phone { get; set; }
         public string? Office { get; set; }
         public Department DepartmentId { get; set; }
+        public User UserId { get; set; }
     }
 }

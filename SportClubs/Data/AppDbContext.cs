@@ -8,9 +8,14 @@ namespace SportClubs.Data
     public class AppDbContext : DbContext
     {
         public DbSet<Club> Clubs { get; set; }
+        public DbSet<StudentClub> StudentClubs { get; set; }
         public DbSet<Student> Students { get; set; }
-        public DbSet<Coach> Coaches { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Faculty> Faculties { get; set; }
         public AppDbContext()
         {
             Database.EnsureDeleted();
