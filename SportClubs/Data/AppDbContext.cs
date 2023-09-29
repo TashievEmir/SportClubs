@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportClubs.Entities;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
@@ -21,10 +22,7 @@ namespace SportClubs.Data
             Database.EnsureDeleted();
             Database.EnsureCreated();
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            
-        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // использование Fluent API
