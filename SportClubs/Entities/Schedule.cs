@@ -12,6 +12,7 @@
         public string? Auditorium { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
-        public Club ClubId { get; set; }
+        public int ClubId { get; set; }
+        public Club Club { get; set; }
     }
 }

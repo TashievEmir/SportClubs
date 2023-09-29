@@ -9,7 +9,10 @@
         public string Email { get; set; }
         public string Phone { get; set; }
         public string? Office { get; set; }
-        public Department DepartmentId { get; set; }
-        public User UserId { get; set; }
+        public Club Club { get; set; }
+        public int DepartmentId { get; set; }
+        public Department Department { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

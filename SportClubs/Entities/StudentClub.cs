@@ -2,8 +2,10 @@
 {
     public class StudentClub
     {
-        public Club ClubId { get; set; }
-        public Student StudentId { get; set; }
+        public int ClubId { get; set; }
+        public Club Club { get; set; }
+        public float StudentId { get; set; }
+        public Student Student { get; set; }
         public string Place { get; set; }
         public bool Status { get; set; }
         public DateTime SelectionDate { get; set; }
