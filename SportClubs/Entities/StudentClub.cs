@@ -4,7 +4,7 @@
     {
         public int ClubId { get; set; }
         public Club Club { get; set; }
-        public float StudentId { get; set; }
+        public double StudentId { get; set; }
         public Student Student { get; set; }
         public string Place { get; set; }
         public bool Status { get; set; }

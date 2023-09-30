@@ -2,7 +2,7 @@
 {
     public class Teacher
     {
-        public float TeacherId { get; set; }
+        public double TeacherId { get; set; }
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string? MiddleName { get; set; }

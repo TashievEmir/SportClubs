@@ -17,10 +17,9 @@ namespace SportClubs.Data
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Faculty> Faculties { get; set; }
-        public AppDbContext()
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
