@@ -1,6 +1,6 @@
 ﻿namespace SportClubs.Services
 {
-    public class Just
+    public class TokenService
     {
     }
 }
