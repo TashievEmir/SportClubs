@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SportClubs.Data;
+using SportClubs.Interfaces;
 using SportClubs.Models;
+using System;
 using System.Security.Cryptography;
 
 namespace SportClubs.Controllers
@@ -12,22 +14,24 @@ namespace SportClubs.Controllers
     {
         private readonly IMapper _mapper;
         AppDbContext _context;
+        IAccountService _accountService;
 
-        public AccountController(AppDbContext context, IMapper mapper)
+        public AccountController(AppDbContext context, IMapper mapper, IAccountService accountService)
         {
             _context = context;
             _mapper = mapper;
+            _accountService = accountService;
         }
 
         [HttpPost]
-        public async Task<ActionResult> LogIn(LogInRequest request)
+        public async Task<ActionResult> LogIn(LogInDto request)
         {
             
 
             return Ok();
         }
         [HttpPost]
-        public async Task<ActionResult> Register(RegisterRequest user)
+        public async Task<ActionResult> Register(RegisterDto user)
         {
             
 

@@ -1,48 +1,57 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using SportClubs.Data;
+using SportClubs.Entities;
+using SportClubs.Interfaces;
 using SportClubs.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace SportClubs.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
-        private AppDbContext _context;
-        public AccountService(AppDbContext context)
+        private readonly AppDbContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly ITokenService _tokenService;
+        public AccountService(AppDbContext context, IConfiguration configuration, ITokenService tokenService)
         {
             _context = context;
+            _configuration = configuration;
+            _tokenService = tokenService;
         }
 
-        public async void LogIn(LogInRequest request)
+        public void LogIn(LogInDto request)
         {
-            
+            var user = _context.Users.FirstOrDefault(x => x.Login == request.Login);
 
-       
-        }
-
-        public async void Register(RegisterRequest user)
-        {
-
-          
-        }
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA512())
+            if (user is not null)
             {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                throw new Exception("User not found");
             }
-        }
-        
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt/* need change to password from DB */)
-        {
-            using (var hmac = new HMACSHA512(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
 
-                return computedHash.SequenceEqual(passwordHash);
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+            {
+                throw new Exception("Incorrect password");
             }
+
+            string token = _tokenService.CreateToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            _tokenService.SetRefreshToken(refreshToken, user);
+        }
+
+        public void Register(RegisterDto user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string CreatePasswordHash(string password)
+        {
+            string newPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+            return newPassword;
         }
     }
 }

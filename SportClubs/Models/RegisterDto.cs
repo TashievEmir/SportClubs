@@ -1,6 +1,6 @@
 ﻿namespace SportClubs.Models
 {
-    public class RegisterRequest
+    public class RegisterDto
     {
 
     }

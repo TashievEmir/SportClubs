@@ -1,9 +1,21 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SportClubs.Data;
+using SportClubs.Interfaces;
+using SportClubs.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen( option =>
     {
