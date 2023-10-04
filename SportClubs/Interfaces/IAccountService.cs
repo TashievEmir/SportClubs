@@ -5,7 +5,7 @@ namespace SportClubs.Interfaces
 {
     public interface IAccountService
     {
-        void LogIn(LogInDto request);
+        TokenModel LogIn(LogInDto request);
         void Register(RegisterDto request);
         string CreatePasswordHash(string password);
 

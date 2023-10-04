@@ -23,7 +23,7 @@ namespace SportClubs.Services
             _tokenService = tokenService;
         }
 
-        public void LogIn(LogInDto request)
+        public TokenModel LogIn(LogInDto request)
         {
             var user = _context.Users.FirstOrDefault(x => x.Login == request.Login);
 
@@ -40,6 +40,13 @@ namespace SportClubs.Services
             string token = _tokenService.CreateToken(user);
             var refreshToken = _tokenService.GenerateRefreshToken();
             _tokenService.SetRefreshToken(refreshToken, user);
+
+            var response = new TokenModel
+            {
+                AccessToken = token,
+                RefreshToken = refreshToken,
+            };
+            return response;
         }
 
         public void Register(RegisterDto user)

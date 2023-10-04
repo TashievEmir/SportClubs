@@ -26,9 +26,7 @@ namespace SportClubs.Controllers
         [HttpPost]
         public async Task<ActionResult> LogIn(LogInDto request)
         {
-            
-
-            return Ok();
+            return Ok(_accountService.LogIn(request));
         }
         [HttpPost]
         public async Task<ActionResult> Register(RegisterDto user)

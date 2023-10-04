@@ -1,13 +1,44 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportClubs.Data;
 using SportClubs.Interfaces;
 using SportClubs.Services;
+using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.RequireHttpsMetadata = false;
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            // укзывает, будет ли валидироваться издатель при валидации токена
+                            ValidateIssuer = true,
+                            // строка, представляющая издателя
+                            ValidIssuer = builder.Configuration.GetSection("JWTSettings:Issuer").Value,
+
+                            // будет ли валидироваться потребитель токена
+                            ValidateAudience = true,
+                            // установка потребителя токена
+                            ValidAudience = builder.Configuration.GetSection("JWTSettings:Audience").Value,
+                            // будет ли валидироваться время существования
+                            ValidateLifetime = true,
+
+                            // установка ключа безопасности
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+                            // валидация ключа безопасности
+                            ValidateIssuerSigningKey = true,
+                        };
+                    });
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {

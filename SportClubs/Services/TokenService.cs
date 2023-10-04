@@ -17,10 +17,11 @@ namespace SportClubs.Services
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
 
-        public TokenService(AppDbContext context, IConfiguration configuration, ITokenService tokenService)
+        public TokenService(AppDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
+
         }
         public string CreateToken(User user)
         {
@@ -31,11 +32,13 @@ namespace SportClubs.Services
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
+                _configuration.GetSection("JWTSettings:SecretKey").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
+                issuer: _configuration.GetSection("JWTSettings:Issuer").Value,
+                audience: _configuration.GetSection("JWTSettings:Audience").Value,
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds);
