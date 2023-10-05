@@ -3,7 +3,7 @@
     public enum Role
     {
         admin = 1,
-        tacher = 2,
+        teacher = 2,
         student = 3
     }
 }

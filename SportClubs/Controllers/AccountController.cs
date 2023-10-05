@@ -29,7 +29,7 @@ namespace SportClubs.Controllers
             return Ok(_accountService.LogIn(request));
         }
         [HttpPost]
-        public async Task<ActionResult> Register(RegisterDto user)
+        public async Task<ActionResult> Register(RegistrationDto user)
         {
             
 
