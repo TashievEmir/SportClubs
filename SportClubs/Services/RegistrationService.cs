@@ -1,75 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
 using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Enums;
 using SportClubs.Interfaces;
 using SportClubs.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace SportClubs.Services
 {
-    public class AccountService : IAccountService
+    public class RegistrationService : IRegistrationService
     {
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
-        public AccountService(AppDbContext context, IConfiguration configuration, ITokenService tokenService)
+
+        public RegistrationService(AppDbContext context, IConfiguration configuration, ITokenService tokenService)
         {
             _context = context;
             _configuration = configuration;
             _tokenService = tokenService;
         }
 
-        public string CreatePasswordHash(string password)
+        public ActionResult<string> Register(RegistrationDto user)
         {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
-
-        public TokenModel LogIn(LogInDto request)
-        {
-            var user = _context.Users.FirstOrDefault(x => x.Login == request.Login);
-
-            if (user is not null)
+            if (!CheckValidManasEmail(user.Email))
             {
-                throw new Exception("User not found");
+                return new BadRequestObjectResult("Invalid Manas email");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
-            {
-                throw new Exception("Incorrect password");
-            }
-
-            string token = _tokenService.CreateToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            _tokenService.SetRefreshToken(refreshToken, user);
-
-            var response = new TokenModel
-            {
-                AccessToken = token,
-                RefreshToken = refreshToken,
-            };
-            return response;
-        }
-
-        public void Register(RegistrationDto user)
-        {
             bool isDouble = double.TryParse(user.Number, out _);
+            bool isInt = int.TryParse(user.Number, out _);
 
             if (isDouble)
-            {              
+            {
                 RegisterStudent(user);
             }
-            else
-            {               
+            else if (isInt)
+            {
                 RegisterTeacher(user);
             }
+            else
+            {
+                return new BadRequestObjectResult("Invalid Teacher/Student number");
+            }
+
+            return new OkObjectResult("User added succesfully");
         }
 
-        private void RegisterStudent(RegistrationDto request)
+        public void RegisterStudent(RegistrationDto request)
         {
             RegisterUser(request, "student");
 
@@ -98,7 +77,7 @@ namespace SportClubs.Services
             }
         }
 
-        private void RegisterTeacher(RegistrationDto request)
+        public void RegisterTeacher(RegistrationDto request)
         {
             RegisterUser(request, "teacher");
 
@@ -127,14 +106,20 @@ namespace SportClubs.Services
             }
         }
 
-        private void RegisterUser(RegistrationDto request, string role)
+        public void RegisterUser(RegistrationDto request, string role)
         {
+            if (!IsStrongPassword(request.Password))
+            {
+                throw new Exception("Password is not strong");
+            }
+
             User user = new User()
             {
                 Login = request.Email,
                 Password = CreatePasswordHash(request.Password),
-                Role = (int)Enum.ToObject(typeof(Role), role)
+                Role = Convert.ToInt32((Role)Enum.Parse(typeof(Role), role))
             };
+
             try
             {
                 _context.Users.Add(user);
@@ -144,7 +129,25 @@ namespace SportClubs.Services
             {
                 throw new Exception($"{error.Message}");
             }
+        }
 
+        private bool CheckValidManasEmail(string email)
+        {
+            string pattern = @"^[A-Za-z0-9._%+-]+@manas\.edu\.kg$";
+
+            return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+        }
+
+        private bool IsStrongPassword(string password)
+        {
+            string pattern = @"^(?=.*[A-Za-z])(?=.*\d).{6,}$";
+
+            return Regex.IsMatch(password, pattern);
+        }
+
+        private string CreatePasswordHash(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
     }
 }

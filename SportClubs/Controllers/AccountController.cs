@@ -14,26 +14,26 @@ namespace SportClubs.Controllers
     {
         private readonly IMapper _mapper;
         AppDbContext _context;
-        IAccountService _accountService;
+        IRegistrationService _registrationService;
+        ILogInService _logInService;
 
-        public AccountController(AppDbContext context, IMapper mapper, IAccountService accountService)
+        public AccountController(AppDbContext context, IMapper mapper, IRegistrationService registrationService, ILogInService logInService)
         {
             _context = context;
             _mapper = mapper;
-            _accountService = accountService;
+            _registrationService = registrationService;
+            _logInService = logInService;
         }
 
         [HttpPost]
         public async Task<ActionResult> LogIn(LogInDto request)
         {
-            return Ok(_accountService.LogIn(request));
+            return Ok(_logInService.LogIn(request));
         }
         [HttpPost]
-        public async Task<ActionResult> Register(RegistrationDto user)
+        public async Task<ActionResult<string>> Register(RegistrationDto user)
         {
-            
-
-            return Ok();
+            return  _registrationService.Register(user);
         }
     }
 }

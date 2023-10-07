@@ -11,7 +11,8 @@ using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<ILogInService, LogInService>();
+builder.Services.AddTransient<IRegistrationService, RegistrationService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
