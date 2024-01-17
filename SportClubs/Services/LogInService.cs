@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SportClubs.Data;
+using SportClubs.Enums;
 using SportClubs.Interfaces;
 using SportClubs.Models;
 
@@ -34,15 +36,16 @@ namespace SportClubs.Services
 
             string token = _tokenService.CreateToken(user);
 
-            var refreshToken = _tokenService.GenerateRefreshToken();
+            /*var refreshToken = _tokenService.GenerateRefreshToken();
 
-            _tokenService.SetRefreshToken(refreshToken, user);
+            _tokenService.SetRefreshToken(refreshToken, user);*/
 
             var response = new TokenModel
             {
                 AccessToken = token,
-                RefreshToken = refreshToken,
-            };
+                User = user.Login,
+                Role = Enum.GetName(typeof(Role), user.Role)
+        };
             return response;
         }
     }

@@ -92,4 +92,4 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+app.Run("https://0.0.0.0:5000");

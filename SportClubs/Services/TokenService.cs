@@ -60,19 +60,19 @@ namespace SportClubs.Services
             return refreshToken;
         }
 
-        public void SetRefreshToken(RefreshToken newRefreshToken, User user)
+        /*public void SetRefreshToken(RefreshToken newRefreshToken, User user)
         {
-            /*var cookieOptions = new CookieOptions
+            *//*var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
                 Expires = newRefreshToken.Expires
             };
             Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
-            need add redis cache*/
+            need add redis cache*//*
 
             user.RefreshToken = newRefreshToken.Token;
             user.TokenCreated = newRefreshToken.Created;
             user.TokenExpires = newRefreshToken.Expires;
-        }
+        }*/
     }
 }

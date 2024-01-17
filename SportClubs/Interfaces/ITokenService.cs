@@ -8,6 +8,6 @@ namespace SportClubs.Interfaces
     {
         string CreateToken(User user);
         RefreshToken GenerateRefreshToken();
-        void SetRefreshToken(RefreshToken refreshToken, User user);
+        //void SetRefreshToken(RefreshToken refreshToken, User user);
     }
 }
