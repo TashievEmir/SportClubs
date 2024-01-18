@@ -41,7 +41,7 @@ namespace SportClubs.Services
                 return new OkObjectResult("User added succesfully");
             }
 
-            return new OkObjectResult("Incorrect Manas Email");
+            return new BadRequestObjectResult("Incorrect Manas Email");
         }
 
         public void RegisterStudent(RegistrationDto request)
