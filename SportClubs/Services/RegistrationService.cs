@@ -4,6 +4,7 @@ using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Enums;
 using SportClubs.Interfaces;
+using SportClubs.Migrations;
 using SportClubs.Models;
 using System.Text.RegularExpressions;
 
@@ -29,23 +30,18 @@ namespace SportClubs.Services
                 return new BadRequestObjectResult("Invalid Manas email");
             }
 
-            bool isDouble = double.TryParse(user.Number, out _);
-            bool isInt = int.TryParse(user.Number, out _);
-
-            if (isDouble)
-            {
-                RegisterStudent(user);
-            }
-            else if (isInt)
+            if (CheckTeacherEmail(user.Email))
             {
                 RegisterTeacher(user);
+                return new OkObjectResult("User added succesfully");
             }
-            else
+            if(CheckStudentEmail(user.Email))
             {
-                return new BadRequestObjectResult("Invalid Teacher/Student number");
+                RegisterStudent(user);
+                return new OkObjectResult("User added succesfully");
             }
 
-            return new OkObjectResult("User added succesfully");
+            return new OkObjectResult("Incorrect Manas Email");
         }
 
         public void RegisterStudent(RegistrationDto request)
@@ -57,7 +53,6 @@ namespace SportClubs.Services
 
             Student student = new Student
             {
-                StudentId = Convert.ToDouble(request.Number),
                 LastName = request.LastName,
                 FirstName = request.FirstName,
                 Email = request.Email,
@@ -86,7 +81,6 @@ namespace SportClubs.Services
 
             Teacher teacher = new Teacher
             {
-                TeacherId = Convert.ToInt32(request.Number),
                 LastName = request.LastName,
                 FirstName = request.FirstName,
                 Email = request.Email,
@@ -148,6 +142,23 @@ namespace SportClubs.Services
         private string CreatePasswordHash(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        private bool CheckTeacherEmail(string email)
+        {
+            string pattern = @"^[a-zA-Z]+\" + '@';
+
+            Regex regex = new Regex(pattern);
+
+            return regex.IsMatch(email);
+        }
+        private bool CheckStudentEmail(string email)
+        {
+            string pattern = @"^\d+(\.\d+)?\" + '@';
+
+            Regex regex = new Regex(pattern);
+
+            return regex.IsMatch(email);
         }
     }
 }

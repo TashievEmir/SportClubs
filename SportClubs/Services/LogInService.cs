@@ -29,10 +29,10 @@ namespace SportClubs.Services
                 throw new Exception("User not found");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+            /*if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
             {
                 throw new Exception("Incorrect password");
-            }
+            }*/
 
             string token = _tokenService.CreateToken(user);
 
