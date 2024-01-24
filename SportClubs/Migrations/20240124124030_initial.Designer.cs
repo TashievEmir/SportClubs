@@ -12,8 +12,8 @@ using SportClubs.Data;
 namespace SportClubs.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230930160104_init")]
-    partial class init
+    [Migration("20240124124030_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,8 +67,8 @@ namespace SportClubs.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("TeacherId")
-                        .HasColumnType("double precision");
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -166,8 +166,11 @@ namespace SportClubs.Migrations
 
             modelBuilder.Entity("SportClubs.Entities.Student", b =>
                 {
-                    b.Property<double>("StudentId")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
@@ -197,7 +200,7 @@ namespace SportClubs.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("StudentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
@@ -212,8 +215,8 @@ namespace SportClubs.Migrations
                     b.Property<int>("ClubId")
                         .HasColumnType("integer");
 
-                    b.Property<double>("StudentId")
-                        .HasColumnType("double precision");
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Place")
                         .IsRequired()
@@ -234,8 +237,11 @@ namespace SportClubs.Migrations
 
             modelBuilder.Entity("SportClubs.Entities.Teacher", b =>
                 {
-                    b.Property<double>("TeacherId")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("integer");
@@ -265,7 +271,7 @@ namespace SportClubs.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("TeacherId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 

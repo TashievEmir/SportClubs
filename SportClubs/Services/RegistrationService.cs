@@ -4,7 +4,6 @@ using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Enums;
 using SportClubs.Interfaces;
-using SportClubs.Migrations;
 using SportClubs.Models;
 using System.Text.RegularExpressions;
 
@@ -46,9 +45,8 @@ namespace SportClubs.Services
 
         public void RegisterStudent(RegistrationDto request)
         {
-            RegisterUser(request, "student");
+            //RegisterUser(request, "student");
 
-            int departmentId = _context.Departments.FirstOrDefault(x => x.Name == request.Department).Id;
             var userId = _context.Users.FirstOrDefault(x => x.Login == request.Email).Id;
 
             Student student = new Student
@@ -57,7 +55,7 @@ namespace SportClubs.Services
                 FirstName = request.FirstName,
                 Email = request.Email,
                 Phone = request.Phone,
-                DepartmentId = departmentId,
+                DepartmentId = Convert.ToInt32(request.Department),
                 UserId = userId
             };
 
@@ -76,7 +74,6 @@ namespace SportClubs.Services
         {
             RegisterUser(request, "teacher");
 
-            int departmentId = _context.Departments.FirstOrDefault(x => x.Name == request.Department).Id;
             var userId = _context.Users.FirstOrDefault(x => x.Login == request.Email).Id;
 
             Teacher teacher = new Teacher
@@ -85,7 +82,7 @@ namespace SportClubs.Services
                 FirstName = request.FirstName,
                 Email = request.Email,
                 Phone = request.Phone,
-                DepartmentId = departmentId,
+                DepartmentId = Convert.ToInt32(request.Department),
                 UserId = userId
             };
 
@@ -102,10 +99,10 @@ namespace SportClubs.Services
 
         public void RegisterUser(RegistrationDto request, string role)
         {
-            if (!IsStrongPassword(request.Password))
+            /*if (!IsStrongPassword(request.Password))
             {
                 throw new Exception("Password is not strong");
-            }
+            }*/
 
             User user = new User()
             {

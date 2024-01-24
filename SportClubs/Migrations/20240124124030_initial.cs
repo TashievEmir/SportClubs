@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SportClubs.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,7 +78,8 @@ namespace SportClubs.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    StudentId = table.Column<double>(type: "double precision", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     MiddleName = table.Column<string>(type: "text", nullable: true),
@@ -90,7 +91,7 @@ namespace SportClubs.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.StudentId);
+                    table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Students_Departments_DepartmentId",
                         column: x => x.DepartmentId,
@@ -109,7 +110,8 @@ namespace SportClubs.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    TeacherId = table.Column<double>(type: "double precision", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     LastName = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
                     MiddleName = table.Column<string>(type: "text", nullable: true),
@@ -121,7 +123,7 @@ namespace SportClubs.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teachers", x => x.TeacherId);
+                    table.PrimaryKey("PK_Teachers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Teachers_Departments_DepartmentId",
                         column: x => x.DepartmentId,
@@ -144,7 +146,7 @@ namespace SportClubs.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    TeacherId = table.Column<double>(type: "double precision", nullable: false)
+                    TeacherId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,7 +155,7 @@ namespace SportClubs.Migrations
                         name: "FK_Clubs_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
-                        principalColumn: "TeacherId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -190,7 +192,7 @@ namespace SportClubs.Migrations
                 columns: table => new
                 {
                     ClubId = table.Column<int>(type: "integer", nullable: false),
-                    StudentId = table.Column<double>(type: "double precision", nullable: false),
+                    StudentId = table.Column<int>(type: "integer", nullable: false),
                     Place = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false),
                     SelectionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -208,7 +210,7 @@ namespace SportClubs.Migrations
                         name: "FK_StudentClubs_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
-                        principalColumn: "StudentId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
