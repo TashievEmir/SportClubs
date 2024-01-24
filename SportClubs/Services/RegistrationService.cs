@@ -45,7 +45,7 @@ namespace SportClubs.Services
 
         public void RegisterStudent(RegistrationDto request)
         {
-            //RegisterUser(request, "student");
+            RegisterUser(request, "student");
 
             var userId = _context.Users.FirstOrDefault(x => x.Login == request.Email).Id;
 
@@ -99,10 +99,10 @@ namespace SportClubs.Services
 
         public void RegisterUser(RegistrationDto request, string role)
         {
-            /*if (!IsStrongPassword(request.Password))
+            if (!IsStrongPassword(request.Password))
             {
                 throw new Exception("Password is not strong");
-            }*/
+            }
 
             User user = new User()
             {
