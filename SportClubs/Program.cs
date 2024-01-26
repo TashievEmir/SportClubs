@@ -16,6 +16,7 @@ builder.Services.AddTransient<IRegistrationService, RegistrationService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IFacultyService, FacultyService>();
 builder.Services.AddTransient<IDepartmentService, DepartmentService>();
+builder.Services.AddTransient<IAnnouncementService, AnnouncementService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

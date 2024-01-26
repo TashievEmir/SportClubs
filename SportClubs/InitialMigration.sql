@@ -166,3 +166,6 @@ INSERT INTO public."Departments"(
 "Name", "FacultyId")
 VALUES ('Экономика жана башкаруу программалары', 12);
 
+INSERT INTO public."Announcements"(
+"Title", "Description", "Photo", "Date")
+VALUES ( 'test title', 'test descr', E'\\x0123456789ABCDEF', CURRENT_DATE);
