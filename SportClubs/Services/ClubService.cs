@@ -5,16 +5,18 @@ using SportClubs.Interfaces;
 
 namespace SportClubs.Services
 {
-    public class AnnouncementService : IAnnouncementService
+    public class ClubService : IClubService
     {
         private readonly AppDbContext _context;
-        public AnnouncementService(AppDbContext context)
+
+        public ClubService(AppDbContext context)
         {
             _context = context;
         }
-        public List<Announcement> GetAnnouncements()
+
+        public List<Club> GetClubs()
         {
-            return _context.Announcements.AsNoTracking().ToList();
+            return _context.Clubs.AsNoTracking().ToList();
         }
     }
 }

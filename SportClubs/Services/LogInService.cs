@@ -22,7 +22,7 @@ namespace SportClubs.Services
 
         public TokenModel LogIn(LogInDto request)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Login == request.Login);
+            var user = _context.Users.AsNoTracking().FirstOrDefault(x => x.Login == request.Login);
 
             if (user is null)
             {

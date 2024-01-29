@@ -15,7 +15,7 @@ namespace SportClubs.Services
         }
         public List<Department> GetDepartments()
         {
-            return _context.Departments.ToList();
+            return _context.Departments.AsNoTracking().ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SportClubs.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Interfaces;
 
@@ -13,7 +14,7 @@ namespace SportClubs.Services
         }
         public List<Faculty> GetFaculties()
         {
-            return _context.Faculties.ToList();
+            return _context.Faculties.AsNoTracking().ToList();
         }
     }
 }
