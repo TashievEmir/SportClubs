@@ -99,10 +99,10 @@ namespace SportClubs.Services
 
         public void RegisterUser(RegistrationDto request, string role)
         {
-            if (!IsStrongPassword(request.Password))
+            /*if (!IsStrongPassword(request.Password))
             {
                 throw new Exception("Password is not strong");
-            }
+            }*/
 
             User user = new User()
             {
