@@ -18,5 +18,17 @@ namespace SportClubs.Services
         {
             return _context.Clubs.AsNoTracking().ToList();
         }
+
+        public List<Student> GetMembersByClubId(int id)
+        {
+            var studentIds = _context.StudentClubs.Where(x => x.ClubId == id).AsNoTracking().Select(x => x.StudentId).ToList();
+
+            List<Student> students = new List<Student>();
+            foreach (var student in studentIds)
+            {
+                students.Add(_context.Students.FirstOrDefault(x => x.Id == student));
+            }
+            return students;
+        }
     }
 }

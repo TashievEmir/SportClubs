@@ -18,5 +18,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_clubService.GetClubs());
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetMembers(int id)
+        {
+            return Ok(_clubService.GetMembersByClubId(id));
+        }
     }
 }
