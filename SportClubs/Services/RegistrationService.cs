@@ -47,7 +47,7 @@ namespace SportClubs.Services
         {
             RegisterUser(request, "student");
 
-            var userId = _context.Users.FirstOrDefault(x => x.Login == request.Email).Id;
+            var userId = _context.Users.AsNoTracking().FirstOrDefault(x => x.Login == request.Email).Id;
 
             Student student = new Student
             {
@@ -74,7 +74,7 @@ namespace SportClubs.Services
         {
             RegisterUser(request, "teacher");
 
-            var userId = _context.Users.FirstOrDefault(x => x.Login == request.Email).Id;
+            var userId = _context.Users.AsNoTracking().FirstOrDefault(x => x.Login == request.Email).Id;
 
             Teacher teacher = new Teacher
             {
