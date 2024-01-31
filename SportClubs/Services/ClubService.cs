@@ -30,5 +30,10 @@ namespace SportClubs.Services
             }
             return students;
         }
+
+        public Schedule GetTimetable(int id)
+        {
+            return _context.Schedules.FirstOrDefault(x => x.ClubId == id);
+        }
     }
 }

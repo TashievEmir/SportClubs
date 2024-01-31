@@ -6,5 +6,6 @@ namespace SportClubs.Interfaces
     {
         List<Club> GetClubs();
         List<Student> GetMembersByClubId(int id);
+        Schedule GetTimetable(int id);
     }
 }

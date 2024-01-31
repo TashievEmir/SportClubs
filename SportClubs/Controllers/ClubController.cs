@@ -24,5 +24,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_clubService.GetMembersByClubId(id));
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetSchedule(int id)
+        {
+            return Ok(_clubService.GetTimetable(id));
+        }
     }
 }
