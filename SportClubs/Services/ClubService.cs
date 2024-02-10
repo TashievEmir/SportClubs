@@ -10,17 +10,42 @@ namespace SportClubs.Services
     public class ClubService : IClubService
     {
         private readonly AppDbContext _context;
+        private readonly IUserService _userService;
+        private readonly IStudentService _studentService;
 
-        public ClubService(AppDbContext context)
+        public ClubService(AppDbContext context, IUserService userService, IStudentService studentService)
         {
             _context = context;
+            _userService = userService;
+            _studentService = studentService;
+        }
+
+        public ActionResult<string> AbandonClub(ClubApplicationDto request)
+        {
+            var user = _userService.GetUserByEmail(request.User);
+            var student = _studentService.GetStudentByUserId(user.Id);
+            var club = GetClubByName(request.Club);
+            var studentClub = _context.StudentClubs.AsNoTracking().FirstOrDefault(x => x.ClubId == club.Id && x.StudentId == student.Id);
+
+            try
+            {
+                _context.StudentClubs.Remove(studentClub);
+                _context.SaveChanges();
+            }
+            catch (Exception error)
+            {
+                throw new Exception($"{error.Message}");
+            }
+
+
+            return new OkObjectResult("Your request done succesfully");
         }
 
         public ActionResult<string> ApplyToClub(ClubApplicationDto request)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Login == request.User);
+            var user = _userService.GetUserByEmail(request.User);
             var student = _context.Students.FirstOrDefault(x => x.UserId == user.Id);
-            var club = _context.Clubs.FirstOrDefault(x => x.Name == request.Club);
+            var club = GetClubByName(request.Club);
 
             StudentClub studentClub = new StudentClub()
             {
@@ -42,6 +67,11 @@ namespace SportClubs.Services
             }
 
             return new OkObjectResult("Your request sent to teacher");
+        }
+
+        public Club GetClubByName(string name)
+        {
+            return _context.Clubs.AsNoTracking().FirstOrDefault(x => x.Name == name);
         }
 
         public List<Club> GetClubs()

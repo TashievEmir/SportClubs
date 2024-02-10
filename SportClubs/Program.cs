@@ -19,6 +19,8 @@ builder.Services.AddTransient<IDepartmentService, DepartmentService>();
 builder.Services.AddTransient<IAnnouncementService, AnnouncementService>();
 builder.Services.AddTransient<IClubService, ClubService>();
 builder.Services.AddTransient<ITeacherService, TeacherService>();
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

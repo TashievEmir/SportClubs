@@ -10,5 +10,7 @@ namespace SportClubs.Interfaces
         List<Student> GetMembersByClubId(int id);
         Schedule GetTimetable(int id);
         ActionResult<string> ApplyToClub(ClubApplicationDto request);
+        ActionResult<string> AbandonClub(ClubApplicationDto request);
+        Club GetClubByName(string name);
     }
 }

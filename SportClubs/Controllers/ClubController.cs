@@ -37,5 +37,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_clubService.ApplyToClub(request));
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> Abandon(ClubApplicationDto request)
+        {
+            return Ok(_clubService.AbandonClub(request));
+        }
     }
 }
