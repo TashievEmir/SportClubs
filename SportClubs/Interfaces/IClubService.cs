@@ -1,4 +1,6 @@
-﻿using SportClubs.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using SportClubs.Entities;
+using SportClubs.Models;
 
 namespace SportClubs.Interfaces
 {
@@ -7,5 +9,6 @@ namespace SportClubs.Interfaces
         List<Club> GetClubs();
         List<Student> GetMembersByClubId(int id);
         Schedule GetTimetable(int id);
+        ActionResult<string> ApplyToClub(ClubApplicationDto request);
     }
 }

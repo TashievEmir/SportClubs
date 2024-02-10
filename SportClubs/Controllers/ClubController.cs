@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportClubs.Interfaces;
+using SportClubs.Models;
 
 namespace SportClubs.Controllers
 {
@@ -29,6 +30,12 @@ namespace SportClubs.Controllers
         public async Task<ActionResult> GetSchedule(int id)
         {
             return Ok(_clubService.GetTimetable(id));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Apply(ClubApplicationDto request)
+        {
+            return Ok(_clubService.ApplyToClub(request));
         }
     }
 }

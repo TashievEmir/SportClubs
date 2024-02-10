@@ -34,6 +34,7 @@ namespace SportClubs.Services
                 RegisterTeacher(user);
                 return new OkObjectResult("User added succesfully");
             }
+
             if(CheckStudentEmail(user.Email))
             {
                 RegisterStudent(user);
