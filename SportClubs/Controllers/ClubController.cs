@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportClubs.Entities;
 using SportClubs.Interfaces;
 using SportClubs.Models;
 
@@ -21,15 +22,15 @@ namespace SportClubs.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetMembers(int id)
+        public async Task<ActionResult> GetMembers(int clubId)
         {
-            return Ok(_clubService.GetMembersByClubId(id));
+            return Ok(_clubService.GetMembersByClubId(clubId));
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetSchedule(int id)
+        public async Task<ActionResult> GetSchedule(int clubId)
         {
-            return Ok(_clubService.GetTimetable(id));
+            return Ok(_clubService.GetTimetable(clubId));
         }
 
         [HttpPost]
@@ -42,6 +43,12 @@ namespace SportClubs.Controllers
         public async Task<ActionResult> Abandon(ClubApplicationDto request)
         {
             return Ok(_clubService.AbandonClub(request));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCandidates(int clubId)
+        {
+            return Ok(_clubService.GetCandidates(clubId));
         }
     }
 }

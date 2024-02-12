@@ -69,6 +69,27 @@ namespace SportClubs.Services
             return new OkObjectResult("Your request sent to teacher");
         }
 
+        public List<Student> GetCandidates(int clubId)
+        {
+            List<StudentClub> candidates = new List<StudentClub>();
+            List<Student> students = new List<Student>();
+            try
+            {
+                candidates = _context.StudentClubs.Where(x => x.Status == false && x.ClubId == clubId).AsNoTracking().ToList();
+                foreach(var item in candidates)
+                {
+                    var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.Id == item.StudentId);
+                    students.Add(student);
+                }
+                
+            }
+            catch (Exception error)
+            {
+                throw new NotImplementedException("Can't get candidates");
+            }
+            return students;
+        }
+
         public Club GetClubByName(string name)
         {
             return _context.Clubs.AsNoTracking().FirstOrDefault(x => x.Name == name);
@@ -79,9 +100,9 @@ namespace SportClubs.Services
             return _context.Clubs.AsNoTracking().ToList();
         }
 
-        public List<Student> GetMembersByClubId(int id)
+        public List<Student> GetMembersByClubId(int clubId)
         {
-            var studentIds = _context.StudentClubs.Where(x => x.ClubId == id && x.Status == true).AsNoTracking().Select(x => x.StudentId).ToList();
+            var studentIds = _context.StudentClubs.Where(x => x.ClubId == clubId && x.Status == true).AsNoTracking().Select(x => x.StudentId).ToList();
 
             List<Student> students = new List<Student>();
             foreach (var student in studentIds)
@@ -91,9 +112,9 @@ namespace SportClubs.Services
             return students;
         }
 
-        public Schedule GetTimetable(int id)
+        public Schedule GetTimetable(int clubId)
         {
-            return _context.Schedules.FirstOrDefault(x => x.ClubId == id);
+            return _context.Schedules.FirstOrDefault(x => x.ClubId == clubId);
         }
     }
 }
