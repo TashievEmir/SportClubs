@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportClubs.Interfaces;
 using SportClubs.Models;
+using SportClubs.Services;
 
 namespace SportClubs.Controllers
 {
@@ -18,6 +19,12 @@ namespace SportClubs.Controllers
         public async Task<ActionResult> GetAll()
         {
             return Ok(_announcementService.GetAnnouncements());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create([FromForm] AnnouncementCreationDto announcement)
+        {
+            return Ok(_announcementService.CreateAnnouncement(announcement));
         }
     }
 }

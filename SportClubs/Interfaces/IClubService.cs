@@ -13,5 +13,6 @@ namespace SportClubs.Interfaces
         ActionResult<string> AbandonClub(ClubApplicationDto request);
         Club GetClubByName(string name);
         List<Student> GetCandidates(int clubId);
+        ActionResult CreateClub(ClubCreationDto club);
     }
 }

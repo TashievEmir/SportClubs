@@ -12,12 +12,14 @@ namespace SportClubs.Services
         private readonly AppDbContext _context;
         private readonly IUserService _userService;
         private readonly IStudentService _studentService;
+        private readonly ITeacherService _teacherService;
 
-        public ClubService(AppDbContext context, IUserService userService, IStudentService studentService)
+        public ClubService(AppDbContext context, IUserService userService, IStudentService studentService, ITeacherService teacherService)
         {
             _context = context;
             _userService = userService;
             _studentService = studentService;
+            _teacherService = teacherService;
         }
 
         public ActionResult<string> AbandonClub(ClubApplicationDto request)
@@ -67,6 +69,29 @@ namespace SportClubs.Services
             }
 
             return new OkObjectResult("Your request sent to teacher");
+        }
+
+        public ActionResult CreateClub(ClubCreationDto club)
+        {
+            var teacher = _teacherService.GetTeacherByFullname(club.Teacher);
+            Club _club = new Club
+            {
+                Name = club.Name,
+                Description = club.Description,
+                TeacherId = teacher.Id
+            };
+
+            try
+            {
+                _context.Clubs.Add(_club);
+                _context.SaveChanges();
+            }
+            catch (Exception error)
+            {
+                throw new NotImplementedException("Can't save new club");
+            }
+
+            return new OkObjectResult("New club saved succesfully");
         }
 
         public List<Student> GetCandidates(int clubId)

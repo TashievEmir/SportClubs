@@ -50,5 +50,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_clubService.GetCandidates(clubId));
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(ClubCreationDto club)
+        {
+            return Ok(_clubService.CreateClub(club));
+        }
     }
 }
