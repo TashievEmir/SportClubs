@@ -26,13 +26,11 @@ namespace SportClubs.Services
             };
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                // Copy the IFormFile content to MemoryStream
                 announcement.Photo.CopyTo(memoryStream);
 
-                // Convert the byte array to a base64 string
-                string base64String = Convert.ToBase64String(memoryStream.ToArray());
+                //string base64String = Convert.ToBase64String(memoryStream.ToArray());
 
-                _announcement.Photo = Encoding.UTF8.GetBytes(base64String);
+                _announcement.Photo = memoryStream.ToArray();
             }
             try
             {
