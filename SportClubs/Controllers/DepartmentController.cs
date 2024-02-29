@@ -20,5 +20,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_departmentService.GetDepartments());
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetById(int facultyId)
+        {
+            return Ok(_departmentService.GetDepartmentsById(facultyId));
+        }
     }
 }

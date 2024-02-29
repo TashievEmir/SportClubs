@@ -42,10 +42,12 @@ namespace SportClubs.Services
 
             var response = new TokenModel
             {
-                AccessToken = token,
+                Id = user.Id,
                 User = user.Login,
-                Role = Enum.GetName(typeof(Role), user.Role)
-        };
+                Role = Enum.GetName(typeof(Role), user.Role),
+                AccessToken = token,
+            };
+
             return response;
         }
     }

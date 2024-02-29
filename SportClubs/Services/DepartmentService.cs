@@ -17,5 +17,10 @@ namespace SportClubs.Services
         {
             return _context.Departments.AsNoTracking().ToList();
         }
+
+        public List<Department> GetDepartmentsById(int facultyId)
+        {
+            return _context.Departments.Where(x => x.FacultyId == facultyId).AsNoTracking().ToList();
+        }
     }
 }
