@@ -33,5 +33,11 @@ namespace SportClubs.Controllers
             return  _registrationService.Register(user);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<string>> VerifyEmail(RegistrationDto user)
+        {
+            return _registrationService.Register(user);
+        }
+
     }
 }

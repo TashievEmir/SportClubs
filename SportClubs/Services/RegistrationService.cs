@@ -14,12 +14,13 @@ namespace SportClubs.Services
         private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
-
-        public RegistrationService(AppDbContext context, IConfiguration configuration, ITokenService tokenService)
+        private readonly IEmailService _emailService;
+        public RegistrationService(AppDbContext context, IConfiguration configuration, ITokenService tokenService, IEmailService emailService)
         {
             _context = context;
             _configuration = configuration;
             _tokenService = tokenService;
+            _emailService = emailService;
         }
 
         public ActionResult<string> Register(RegistrationDto user)
@@ -127,7 +128,9 @@ namespace SportClubs.Services
         {
             string pattern = @"^[A-Za-z0-9._%+-]+@manas\.edu\.kg$";
 
-            return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+            var answer = Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+
+            return answer;
         }
 
         private bool IsStrongPassword(string password)
