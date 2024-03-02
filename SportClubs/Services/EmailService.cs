@@ -1,17 +1,29 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 using SportClubs.Interfaces;
+using SportClubs.Models;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace SportClubs.Services
 {
     public class EmailService : IEmailService
     {
-        public EmailService()
+        private readonly IMemoryCache _cache;
+        public EmailService(IMemoryCache cache)
         {
+            _cache = cache;
+        }
+
+        public int GenerateVerifyCode()
+        {
+            Random random = new Random();
+            return random.Next(1000, 10000);
         }
 
         public void Send(string mail, int verificationCode)
@@ -29,6 +41,34 @@ namespace SportClubs.Services
             smtp.Authenticate("tes01.star@gmail.com", "hwxrwoardwqjpdkn");
             smtp.Send(email);
             smtp.Disconnect(true);
+        }
+
+        public void SendEmail(string email)
+        {
+            var code = GenerateVerifyCode();
+
+            _cache.Set(email, code, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            });
+
+            Send(email, code);
+        }
+
+        public bool VerifyEmail(VerifyEmailDto request)
+        {
+            _cache.TryGetValue(request.Email, out int? code);
+
+            if (!code.HasValue)
+            {
+                throw new Exception("Code hasn't been provided");
+            }
+
+            if (code.Value == request.Code)
+            {
+                return true;
+            }
+            return false ;
         }
     }
 }

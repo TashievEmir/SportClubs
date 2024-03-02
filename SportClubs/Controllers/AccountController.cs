@@ -14,11 +14,13 @@ namespace SportClubs.Controllers
     {
         IRegistrationService _registrationService;
         ILogInService _logInService;
+        IEmailService _emailService;
 
-        public AccountController(IRegistrationService registrationService, ILogInService logInService)
+        public AccountController(IRegistrationService registrationService, ILogInService logInService, IEmailService emailService)
         {
             _registrationService = registrationService;
             _logInService = logInService;
+            _emailService = emailService;
         }
 
         [HttpPost]
@@ -34,9 +36,20 @@ namespace SportClubs.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> VerifyEmail(RegistrationDto user)
+        public async Task<ActionResult<string>> SendEmail(SendEmailSto email)
         {
-            return _registrationService.Register(user);
+            _emailService.SendEmail(email.Email);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> VerifyEmail(VerifyEmailDto request)
+        {
+            if (_emailService.VerifyEmail(request))
+            {
+                return new OkObjectResult("Email has been verified");
+            }
+            return BadRequest();
         }
 
     }

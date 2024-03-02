@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Enums;
@@ -15,12 +16,14 @@ namespace SportClubs.Services
         private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
-        public RegistrationService(AppDbContext context, IConfiguration configuration, ITokenService tokenService, IEmailService emailService)
+        private readonly IMemoryCache _cache;
+        public RegistrationService(AppDbContext context, IConfiguration configuration, ITokenService tokenService, IEmailService emailService, IMemoryCache cache)
         {
             _context = context;
             _configuration = configuration;
             _tokenService = tokenService;
             _emailService = emailService;
+            _cache = cache;
         }
 
         public ActionResult<string> Register(RegistrationDto user)
@@ -153,6 +156,7 @@ namespace SportClubs.Services
 
             return regex.IsMatch(email);
         }
+
         private bool CheckStudentEmail(string email)
         {
             string pattern = @"^\d+(\.\d+)?\" + '@';
