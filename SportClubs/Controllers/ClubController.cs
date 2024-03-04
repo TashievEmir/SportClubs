@@ -10,9 +10,11 @@ namespace SportClubs.Controllers
     public class ClubController : ControllerBase
     {
         private readonly IClubService _clubService;
-        public ClubController( IClubService clubService)
+        private readonly IStudentService _studentService;
+        public ClubController( IClubService clubService, IStudentService studentService)
         {
             _clubService = clubService;
+            _studentService = studentService;
         }
 
         [HttpGet]
@@ -55,6 +57,12 @@ namespace SportClubs.Controllers
         public async Task<ActionResult> Create(ClubCreationDto club)
         {
             return Ok(_clubService.CreateClub(club));
+        }
+
+        [HttpDelete("{studentEmail}")]
+        public async Task<ActionResult> RemoveStudent(string studentEmail)
+        {
+            return Ok(_studentService.RemoveFromClub(studentEmail));
         }
     }
 }
