@@ -15,6 +15,7 @@ namespace SportClubs.Services
             _context = context;
         }
 
+
         public Student GetStudentByUserId(int id)
         {
             return _context.Students.AsNoTracking().FirstOrDefault(x => x.UserId == id);
