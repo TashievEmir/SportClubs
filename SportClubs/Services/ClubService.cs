@@ -68,7 +68,7 @@ namespace SportClubs.Services
                 throw new Exception($"{error.Message}");
             }
 
-            return new OkObjectResult("Your request sent to teacher");
+            return new OkObjectResult("Your request has been sent to teacher");
         }
 
         public ActionResult CreateClub(ClubCreationDto club)

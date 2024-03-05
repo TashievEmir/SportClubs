@@ -64,5 +64,17 @@ namespace SportClubs.Controllers
         {
             return Ok(_studentService.RemoveFromClub(studentEmail));
         }
+
+        [HttpPut]
+        public async Task<ActionResult> ApproveStudent(StudentEmailDto student)
+        {
+            return Ok(_studentService.ApproveToClub(student.Email));
+        }
+
+        [HttpDelete("{studentEmail}")]
+        public async Task<ActionResult> RejectStudent(string studentEmail)
+        {
+            return Ok(_studentService.RejectFromClub(studentEmail));
+        }
     }
 }

@@ -15,17 +15,40 @@ namespace SportClubs.Services
             _context = context;
         }
 
+        public ActionResult<string> ApproveToClub(string email)
+        {
+            var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.Email == email);
+
+            var studentClub = _context.StudentClubs.FirstOrDefault(x => x.StudentId == student.Id);
+
+            if (studentClub is not null)
+            {
+                studentClub.Status = true;
+            }
+
+            try
+            {
+                _context.StudentClubs.Update(studentClub);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return new OkObjectResult("Student has been approved");
+        }
 
         public Student GetStudentByUserId(int id)
         {
             return _context.Students.AsNoTracking().FirstOrDefault(x => x.UserId == id);
         }
 
-        public async Task RemoveFromClub(string email)
+        public ActionResult<string> RejectFromClub(string email)
         {
-            var student = _context.Students.FirstOrDefault(x => x.Email == email);
+            var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.Email == email);
 
-            var studentClub = _context.StudentClubs.AsNoTracking().FirstOrDefault(x => x.StudentId == student.Id);
+            var studentClub = _context.StudentClubs.FirstOrDefault(x => x.StudentId == (student == null ? 0 : student.Id));
 
             try
             {
@@ -36,6 +59,27 @@ namespace SportClubs.Services
             {
                 throw new Exception(ex.Message);
             }
+
+            return new OkObjectResult("Student has been rejected succesfully");
+        }
+
+        public ActionResult<string> RemoveFromClub(string email)
+        {
+            var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.Email == email);
+
+            var studentClub = _context.StudentClubs.FirstOrDefault(x => x.StudentId == student.Id);
+
+            try
+            {
+                _context.StudentClubs.Remove(studentClub);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return new OkObjectResult("Student has been deleted succesfully");
         }
     }
 }
