@@ -150,7 +150,7 @@ namespace SportClubs.Services
 
         private bool CheckTeacherEmail(string email)
         {
-            string pattern = @"^[a-zA-Z]+\" + '@';
+            string pattern = @"^[a-zA-Z.]+@manas\.edu\.kg$";
 
             Regex regex = new Regex(pattern);
 
@@ -159,7 +159,7 @@ namespace SportClubs.Services
 
         private bool CheckStudentEmail(string email)
         {
-            string pattern = @"^\d+(\.\d+)?\" + '@';
+            string pattern = @"^[0-9.]+@manas\.edu\.kg$";
 
             Regex regex = new Regex(pattern);
 
