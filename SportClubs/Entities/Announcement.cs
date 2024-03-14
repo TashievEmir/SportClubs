@@ -7,5 +7,6 @@
         public string Description { get; set; }
         public byte[] Photo { get; set; }
         public DateTime Date { get; set; }
+        public List<Image> Images { get; set; }
     }
 }

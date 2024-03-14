@@ -17,6 +17,8 @@ namespace SportClubs.Data
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Faculty> Faculties { get; set; }
+        public DbSet<Image> Images { get; set; }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             
@@ -79,6 +81,18 @@ namespace SportClubs.Data
                 .HasOne(d => d.Faculty)
                 .WithMany(f => f.Departments)
                 .HasForeignKey(d => d.FacultyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Image>()
+                .HasOne(x => x.Club)
+                .WithMany(x => x.Images)
+                .HasForeignKey(x => x.ClubId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Image>()
+                .HasOne(x => x.Announcement)
+                .WithMany(x => x.Images)
+                .HasForeignKey(x => x.ClubId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);

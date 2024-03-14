@@ -30,8 +30,8 @@ namespace SportClubs.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -64,6 +64,10 @@ namespace SportClubs.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("Photo")
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("integer");
@@ -113,6 +117,33 @@ namespace SportClubs.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Faculties");
+                });
+
+            modelBuilder.Entity("SportClubs.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AnnouncementId")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ClubId")
+                        .IsRequired()
+                        .HasColumnType("integer");
+
+                    b.Property<byte[]>("Photo")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("SportClubs.Entities.Schedule", b =>
@@ -181,19 +212,17 @@ namespace SportClubs.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("Grade")
-                        .HasColumnType("integer");
-
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MiddleName")
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("Photo")
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -256,15 +285,13 @@ namespace SportClubs.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Office")
-                        .HasColumnType("text");
-
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("Photo")
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -323,6 +350,25 @@ namespace SportClubs.Migrations
                         .IsRequired();
 
                     b.Navigation("Faculty");
+                });
+
+            modelBuilder.Entity("SportClubs.Entities.Image", b =>
+                {
+                    b.HasOne("SportClubs.Entities.Announcement", "Announcement")
+                        .WithMany("Images")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportClubs.Entities.Club", "Club")
+                        .WithMany("Images")
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Announcement");
+
+                    b.Navigation("Club");
                 });
 
             modelBuilder.Entity("SportClubs.Entities.Schedule", b =>
@@ -393,8 +439,15 @@ namespace SportClubs.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SportClubs.Entities.Announcement", b =>
+                {
+                    b.Navigation("Images");
+                });
+
             modelBuilder.Entity("SportClubs.Entities.Club", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Schedule")
                         .IsRequired();
 
