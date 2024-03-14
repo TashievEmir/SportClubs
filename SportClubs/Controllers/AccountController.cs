@@ -30,7 +30,7 @@ namespace SportClubs.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> Register(RegistrationDto user)
+        public async Task<ActionResult<string>> Register([FromForm] RegistrationDto user)
         {
             return  _registrationService.Register(user);
         }

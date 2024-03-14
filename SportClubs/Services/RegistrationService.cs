@@ -6,6 +6,8 @@ using SportClubs.Entities;
 using SportClubs.Enums;
 using SportClubs.Interfaces;
 using SportClubs.Models;
+using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SportClubs.Services
@@ -63,6 +65,15 @@ namespace SportClubs.Services
                 DepartmentId = Convert.ToInt32(request.Department),
                 UserId = userId
             };
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                request.Photo.CopyTo(memoryStream);
+
+                //string base64String = Convert.ToBase64String(memoryStream.ToArray());
+
+                student.Photo = memoryStream.ToArray();
+            }
 
             try
             {
