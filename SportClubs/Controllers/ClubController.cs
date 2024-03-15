@@ -54,7 +54,7 @@ namespace SportClubs.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(ClubCreationDto club)
+        public async Task<ActionResult> Create([FromForm]ClubCreationDto club)
         {
             return Ok(_clubService.CreateClub(club));
         }
