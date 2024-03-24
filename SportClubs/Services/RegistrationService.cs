@@ -102,6 +102,15 @@ namespace SportClubs.Services
                 UserId = userId
             };
 
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                request.Photo.CopyTo(memoryStream);
+
+                //string base64String = Convert.ToBase64String(memoryStream.ToArray());
+
+                teacher.Photo = memoryStream.ToArray();
+            }
+
             try
             {
                 _context.Teachers.Add(teacher);
