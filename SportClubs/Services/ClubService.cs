@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Ocsp;
 using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Interfaces;
@@ -80,6 +81,12 @@ namespace SportClubs.Services
                 Description = club.Description,
                 TeacherId = teacher.Id
             };
+
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                club.Photo.CopyTo(memoryStream);
+                _club.Photo = memoryStream.ToArray();
+            }
 
             try
             {

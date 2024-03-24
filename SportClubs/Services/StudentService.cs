@@ -81,5 +81,13 @@ namespace SportClubs.Services
 
             return new OkObjectResult("Student has been deleted succesfully");
         }
+
+        public StudentClub GetStatusInClub(int userId, int clubId)
+        {
+            var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.UserId == userId);
+
+            return  _context.StudentClubs.FirstOrDefault(x => x.StudentId == student.Id && x.ClubId == clubId);
+
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace SportClubs.Interfaces
         ActionResult<string> RemoveFromClub(string email);
         ActionResult<string> ApproveToClub(string email);
         ActionResult<string> RejectFromClub(string email);
+        StudentClub GetStatusInClub(int userId, int clubId);
     }
 }

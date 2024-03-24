@@ -69,9 +69,6 @@ namespace SportClubs.Services
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 request.Photo.CopyTo(memoryStream);
-
-                //string base64String = Convert.ToBase64String(memoryStream.ToArray());
-
                 student.Photo = memoryStream.ToArray();
             }
 
@@ -105,9 +102,6 @@ namespace SportClubs.Services
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 request.Photo.CopyTo(memoryStream);
-
-                //string base64String = Convert.ToBase64String(memoryStream.ToArray());
-
                 teacher.Photo = memoryStream.ToArray();
             }
 

@@ -76,5 +76,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_studentService.RejectFromClub(studentEmail));
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetStudentStatus(int userId, int clubId)
+        {
+            return Ok(_studentService.GetStatusInClub(userId, clubId));
+        }
     }
 }

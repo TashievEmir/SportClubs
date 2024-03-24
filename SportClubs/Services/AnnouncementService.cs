@@ -27,9 +27,6 @@ namespace SportClubs.Services
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 announcement.Photo.CopyTo(memoryStream);
-
-                //string base64String = Convert.ToBase64String(memoryStream.ToArray());
-
                 _announcement.Photo = memoryStream.ToArray();
             }
             try
