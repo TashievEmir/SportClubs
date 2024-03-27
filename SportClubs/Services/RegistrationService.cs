@@ -52,7 +52,7 @@ namespace SportClubs.Services
 
         public void RegisterStudent(RegistrationDto request)
         {
-            RegisterUser(request, "student");
+            RegisterUser(request, Role.student);
 
             var userId = _context.Users.AsNoTracking().FirstOrDefault(x => x.Login == request.Email).Id;
 
@@ -85,7 +85,7 @@ namespace SportClubs.Services
 
         public void RegisterTeacher(RegistrationDto request)
         {
-            RegisterUser(request, "teacher");
+            RegisterUser(request, Role.teacher);
 
             var userId = _context.Users.AsNoTracking().FirstOrDefault(x => x.Login == request.Email).Id;
 
@@ -116,7 +116,7 @@ namespace SportClubs.Services
             }
         }
 
-        public void RegisterUser(RegistrationDto request, string role)
+        public void RegisterUser(RegistrationDto request, Role role)
         {
             /*if (!IsStrongPassword(request.Password))
             {
@@ -127,7 +127,7 @@ namespace SportClubs.Services
             {
                 Login = request.Email,
                 Password = CreatePasswordHash(request.Password),
-                Role = Convert.ToInt32((Role)Enum.Parse(typeof(Role), role))
+                Role = (int)role
             };
 
             try
