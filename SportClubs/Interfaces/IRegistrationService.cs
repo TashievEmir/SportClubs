@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportClubs.Enums;
 using SportClubs.Models;
 
 namespace SportClubs.Interfaces
@@ -6,7 +7,7 @@ namespace SportClubs.Interfaces
     public interface IRegistrationService
     {
         ActionResult<string> Register(RegistrationDto request);
-        void RegisterUser(RegistrationDto request, string role);
+        void RegisterUser(RegistrationDto request, Role role);
         void RegisterStudent(RegistrationDto request);
         void RegisterTeacher(RegistrationDto request);
     }
