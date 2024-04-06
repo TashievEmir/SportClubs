@@ -148,5 +148,47 @@ namespace SportClubs.Services
         {
             return _context.Schedules.FirstOrDefault(x => x.ClubId == clubId);
         }
+
+        public ActionResult<string> UpdateSchedule(ScheduleDto schedule)
+        {
+           var isSchedule = _context.Schedules.AsNoTracking().FirstOrDefault(x => x.ClubId == schedule.ClubId);
+
+            if (isSchedule is not null)
+            {
+                isSchedule.Monday = schedule.Monday;
+                isSchedule.Tuesday = schedule.Tuesday;
+                isSchedule.Wednesday = schedule.Wednesday;
+                isSchedule.Thursday = schedule.Thursday;
+                isSchedule.Friday = schedule.Friday;
+                isSchedule.Place = schedule.Place;
+                isSchedule.Auditorium = schedule.Auditorium;
+                isSchedule.StartTime = schedule.StartTime;
+                isSchedule.EndTime = schedule.EndTime;
+
+                _context.Schedules.Update(isSchedule);
+                _context.SaveChanges();
+
+                return new OkObjectResult("Updated succesfully");
+            }
+
+            Schedule newSchedule = new()
+            {
+                Monday = schedule.Monday,
+                Tuesday = schedule.Tuesday,
+                Wednesday = schedule.Wednesday,
+                Thursday = schedule.Thursday,
+                Friday = schedule.Friday,
+                Place = schedule.Place,
+                Auditorium = schedule.Auditorium,
+                StartTime = schedule.StartTime,
+                EndTime = schedule.EndTime,
+                ClubId = schedule.ClubId,
+            };
+
+            _context.Schedules.Add(newSchedule);
+            _context.SaveChanges();
+
+            return new OkObjectResult("Schedul has been added");
+        }
     }
 }

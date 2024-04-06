@@ -14,5 +14,6 @@ namespace SportClubs.Interfaces
         Club GetClubByName(string name);
         List<Student> GetCandidates(int clubId);
         ActionResult CreateClub(ClubCreationDto club);
+        ActionResult<string> UpdateSchedule(ScheduleDto schedule);
     }
 }

@@ -82,5 +82,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_studentService.GetStatusInClub(userId, clubId));
         }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateSchedule(ScheduleDto schedule)
+        {
+            return Ok(_clubService.UpdateSchedule(schedule));
+        }
     }
 }
