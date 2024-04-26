@@ -75,30 +75,36 @@ namespace SportClubs.Services
         public ActionResult CreateClub(ClubCreationDto club)
         {
             var teacher = _teacherService.GetTeacherByFullname(club.Teacher);
-            Club _club = new Club
-            {
-                Name = club.Name,
-                Description = club.Description,
-                TeacherId = teacher.Id
-            };
 
-            using (MemoryStream memoryStream = new MemoryStream())
+            if (teacher is not null)
             {
-                club.Photo.CopyTo(memoryStream);
-                _club.Photo = memoryStream.ToArray();
+                Club _club = new Club
+                {
+                    Name = club.Name,
+                    Description = club.Description,
+                    TeacherId = teacher.Id
+                };
+
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    club.Photo.CopyTo(memoryStream);
+                    _club.Photo = memoryStream.ToArray();
+                }
+
+                try
+                {
+                    _context.Clubs.Add(_club);
+                    _context.SaveChanges();
+                }
+                catch (Exception error)
+                {
+                    throw new NotImplementedException($" {error.Message} ");
+                }
+
+                return new OkObjectResult("New club saved succesfully");
             }
 
-            try
-            {
-                _context.Clubs.Add(_club);
-                _context.SaveChanges();
-            }
-            catch (Exception error)
-            {
-                throw new NotImplementedException("Can't save new club");
-            }
-
-            return new OkObjectResult("New club saved succesfully");
+            return new OkObjectResult("There is no such teacher");
         }
 
         public List<Student> GetCandidates(int clubId)
