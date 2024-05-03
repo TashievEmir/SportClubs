@@ -16,7 +16,11 @@ namespace SportClubs.Services
         public Teacher GetTeacherByFullname(string fullname)
         {
             string[] fullName = fullname.Split(' ');
-            return _appDbContext.Teachers.AsNoTracking().FirstOrDefault(x => x.LastName == fullName[0] && x.FirstName == fullName[1]);
+            if (fullName.Count() == 2)
+            {
+                return _appDbContext.Teachers.AsNoTracking().FirstOrDefault(x => x.LastName == fullName[0] && x.FirstName == fullName[1]);
+            }
+            return _appDbContext.Teachers.AsNoTracking().FirstOrDefault(x => x.LastName == $"{fullName[0]} {fullName[1]}" && x.FirstName == fullName[2]);
         }
 
         public List<Teacher> GetTeachers()
