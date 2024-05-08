@@ -26,5 +26,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_announcementService.CreateAnnouncement(announcement));
         }
+
+        [HttpDelete("{announcementId}")]
+        public async Task<ActionResult> Delete(int announcementId)
+        {
+            return Ok();
+        }
     }
 }

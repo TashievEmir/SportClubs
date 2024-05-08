@@ -25,7 +25,16 @@ namespace SportClubs.Services
 
         public List<Teacher> GetTeachers()
         {
-            return _appDbContext.Teachers.AsNoTracking().ToList();
+            var teachers = _appDbContext.Teachers.AsNoTracking().ToList();
+            var clubs = _appDbContext.Clubs.AsNoTracking().ToList();
+            List<Teacher> freeTeachers = new List<Teacher>();
+
+            foreach ( var club in clubs )
+            {
+                freeTeachers.AddRange(teachers.Where(x => x.Id != club.TeacherId).ToList());
+            }
+            
+            return teachers;
         }
     }
 }
