@@ -1,4 +1,5 @@
-﻿using SportClubs.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using SportClubs.Entities;
 
 namespace SportClubs.Interfaces
 {
@@ -7,5 +8,6 @@ namespace SportClubs.Interfaces
         List<Teacher> GetTeachers();
         List<Teacher> GetFreeTeachers();
         Teacher GetTeacherByFullname(string email);
+        ActionResult DeleteTeacher(int teacherId);
     }
 }

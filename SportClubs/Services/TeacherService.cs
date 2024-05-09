@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper.Configuration.Annotations;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Interfaces;
@@ -11,6 +13,23 @@ namespace SportClubs.Services
         public TeacherService(AppDbContext appDbContext) 
         {
             _appDbContext = appDbContext;
+        }
+
+        public ActionResult DeleteTeacher(int teacherId)
+        {
+            var teacher = _appDbContext.Teachers.FirstOrDefault(x => x.Id == teacherId);
+
+            try
+            {
+                _appDbContext.Teachers.Remove(teacher);
+                _appDbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new NotImplementedException();
+            }
+
+            return new OkObjectResult("Teacher deleted succsefully");
         }
 
         public List<Teacher> GetFreeTeachers()

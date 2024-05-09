@@ -24,5 +24,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_teacherService.GetFreeTeachers());
         }
+
+        [HttpDelete("{teacherId}")]
+        public async Task<ActionResult> Delete(int teacherId)
+        {
+            return Ok(_teacherService.DeleteTeacher(teacherId));
+        }
     }
 }
