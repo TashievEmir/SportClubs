@@ -8,5 +8,6 @@ namespace SportClubs.Interfaces
     {
         List<Announcement> GetAnnouncements();
         ActionResult CreateAnnouncement(AnnouncementCreationDto announcement);
+        ActionResult DeleteAnnouncement(int announcementId);
     }
 }

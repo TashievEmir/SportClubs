@@ -18,5 +18,11 @@ namespace SportClubs.Controllers
         {
             return Ok(_teacherService.GetTeachers());
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllFree()
+        {
+            return Ok(_teacherService.GetFreeTeachers());
+        }
     }
 }

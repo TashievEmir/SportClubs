@@ -13,6 +13,17 @@ namespace SportClubs.Services
             _appDbContext = appDbContext;
         }
 
+        public List<Teacher> GetFreeTeachers()
+        {
+            var teachers = _appDbContext.Teachers.AsNoTracking().ToList();
+            var clubs = _appDbContext.Clubs.AsNoTracking().ToList();
+
+            var teacherIdsInClubs = clubs.Select(c => c.TeacherId).ToList();
+            var freeTeachers = teachers.Where(t => !teacherIdsInClubs.Contains(t.Id)).ToList();
+
+            return freeTeachers;
+        }
+
         public Teacher GetTeacherByFullname(string fullname)
         {
             string[] fullName = fullname.Split(' ');
@@ -25,16 +36,7 @@ namespace SportClubs.Services
 
         public List<Teacher> GetTeachers()
         {
-            var teachers = _appDbContext.Teachers.AsNoTracking().ToList();
-            var clubs = _appDbContext.Clubs.AsNoTracking().ToList();
-            List<Teacher> freeTeachers = new List<Teacher>();
-
-            foreach ( var club in clubs )
-            {
-                freeTeachers.AddRange(teachers.Where(x => x.Id != club.TeacherId).ToList());
-            }
-            
-            return teachers;
+            return _appDbContext.Teachers.AsNoTracking().ToList();
         }
     }
 }

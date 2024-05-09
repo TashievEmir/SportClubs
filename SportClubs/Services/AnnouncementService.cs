@@ -42,6 +42,23 @@ namespace SportClubs.Services
             return new OkObjectResult("Announcement saved succesfully");
         }
 
+        public ActionResult DeleteAnnouncement(int announcementId)
+        {
+            var announcement = _context.Announcements.FirstOrDefault(x => x.Id == announcementId);
+
+            try
+            {
+                _context.Announcements.Remove(announcement);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new NotImplementedException("Can't delete announcement");
+            }
+
+            return new OkObjectResult("Announcement deleted succesfully");
+        }
+
         public List<Announcement> GetAnnouncements()
         {
             return _context.Announcements.AsNoTracking().ToList();

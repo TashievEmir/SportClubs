@@ -30,7 +30,7 @@ namespace SportClubs.Controllers
         [HttpDelete("{announcementId}")]
         public async Task<ActionResult> Delete(int announcementId)
         {
-            return Ok();
+            return Ok(_announcementService.DeleteAnnouncement(announcementId));
         }
     }
 }

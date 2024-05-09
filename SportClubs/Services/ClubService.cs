@@ -104,7 +104,7 @@ namespace SportClubs.Services
                 return new OkObjectResult("New club saved succesfully");
             }
 
-            return new OkObjectResult("There is no such teacher");
+            throw new NotImplementedException("There is no such teacher");
         }
 
         public List<Student> GetCandidates(int clubId)
