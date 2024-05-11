@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MailKit.Security;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using MimeKit.Text;
+using MimeKit;
 using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Enums;
@@ -28,26 +31,30 @@ namespace SportClubs.Services
             _cache = cache;
         }
 
-        public ActionResult<string> Register(RegistrationDto user)
+        public void Register(RegistrationDto user)
         {
-            if (!CheckValidManasEmail(user.Email))
-            {
-                return new BadRequestObjectResult("Invalid Manas email");
-            }
+            int code = GenerateVerifyCode();
+            _cache.Set(user.Email, code, TimeSpan.FromMinutes(10));
+            _cache.Set("account", user, TimeSpan.FromMinutes(10));
 
-            if (CheckTeacherEmail(user.Email))
-            {
-                RegisterTeacher(user);
-                return new OkObjectResult("User added succesfully");
-            }
+            SendEmail(user.Email, code);
+        }
 
-            if(CheckStudentEmail(user.Email))
-            {
-                RegisterStudent(user);
-                return new OkObjectResult("User added succesfully");
-            }
+        private void SendEmail(string mail, int verificationCode)
+        {
+            // create message
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("tes01.star@gmail.com"));
+            email.To.Add(MailboxAddress.Parse(mail));
+            email.Subject = "Title";
+            email.Body = new TextPart(TextFormat.Html) { Text = $" Your verification code: {verificationCode} " };
 
-            return new BadRequestObjectResult("Incorrect Manas Email");
+            // send email
+            using var smtp = new MailKit.Net.Smtp.SmtpClient();
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate("tes01.star@gmail.com", "hwxrwoardwqjpdkn");
+            smtp.Send(email);
+            smtp.Disconnect(true);
         }
 
         public void RegisterStudent(RegistrationDto request)
@@ -178,6 +185,51 @@ namespace SportClubs.Services
             Regex regex = new Regex(pattern);
 
             return regex.IsMatch(email);
+        }
+
+        public int GenerateVerifyCode()
+        {
+            Random random = new Random();
+            return random.Next(1000, 10000);
+        }
+
+        public ActionResult<string> VerifyEmail(VerifyEmailDto request)
+        {
+            _cache.TryGetValue(request.Email, out int? code);
+
+            if (!code.HasValue)
+            {
+                throw new Exception("Code hasn't been provided");
+            }
+
+            if (code.Value == request.Code)
+            {
+                _cache.TryGetValue("account", out RegistrationDto account);
+
+                if (account is not null)
+                {
+                    if (!CheckValidManasEmail(account.Email))
+                    {
+                        return new BadRequestObjectResult("Invalid Manas email");
+                    }
+
+                    if (CheckTeacherEmail(account.Email))
+                    {
+                        RegisterTeacher(account);
+                        return new OkObjectResult("User added succesfully");
+                    }
+
+                    if (CheckStudentEmail(account.Email))
+                    {
+                        RegisterStudent(account);
+                        return new OkObjectResult("User added succesfully");
+                    }
+
+                    return new BadRequestObjectResult("Incorrect Manas Email");
+                }
+            }
+
+            return new BadRequestObjectResult("Something went wrong");
         }
     }
 }

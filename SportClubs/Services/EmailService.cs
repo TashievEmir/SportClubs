@@ -49,7 +49,7 @@ namespace SportClubs.Services
 
             _cache.Set(email, code, new MemoryCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
             });
 
             Send(email, code);

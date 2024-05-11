@@ -32,7 +32,8 @@ namespace SportClubs.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromForm] RegistrationDto user)
         {
-            return  _registrationService.Register(user);
+            _registrationService.Register(user);
+            return Ok("Code has been sent to email");
         }
 
         [HttpPost]
@@ -45,11 +46,7 @@ namespace SportClubs.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> VerifyEmail(VerifyEmailDto request)
         {
-            if (_emailService.VerifyEmail(request))
-            {
-                return new OkObjectResult("Email has been verified");
-            }
-            return BadRequest();
+            return _registrationService.VerifyEmail(request);
         }
 
     }
