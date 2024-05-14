@@ -22,13 +22,14 @@ namespace SportClubs.Services
             {
                 Title = announcement.Title,
                 Description = announcement.Description,
-                Date = announcement.CreationDate
+                Date = announcement.CreationDate,
+                Photo = announcement.Photo
             };
-            using (MemoryStream memoryStream = new MemoryStream())
+            /*using (MemoryStream memoryStream = new MemoryStream())
             {
                 announcement.Photo.CopyTo(memoryStream);
                 _announcement.Photo = memoryStream.ToArray();
-            }
+            }*/
             try
             {
                 _context.Announcements.Add(_announcement);

@@ -57,14 +57,14 @@ namespace SportClubs.Services
 
         public bool VerifyEmail(VerifyEmailDto request)
         {
-            _cache.TryGetValue(request.Email, out int? code);
+            _cache.TryGetValue(request.Email, out string code);
 
-            if (!code.HasValue)
+            if (code is null)
             {
                 throw new Exception("Code hasn't been provided");
             }
 
-            if (code.Value == request.Code)
+            if (code == request.Code)
             {
                 return true;
             }

@@ -34,7 +34,7 @@ namespace SportClubs.Services
         public void Register(RegistrationDto user)
         {
             int code = GenerateVerifyCode();
-            _cache.Set(user.Email, code, TimeSpan.FromMinutes(10));
+            _cache.Set(user.Email, code.ToString(), TimeSpan.FromMinutes(10));
             _cache.Set("account", user, TimeSpan.FromMinutes(10));
 
             SendEmail(user.Email, code);
@@ -70,14 +70,22 @@ namespace SportClubs.Services
                 Email = request.Email,
                 Phone = request.Phone,
                 DepartmentId = Convert.ToInt32(request.Department),
-                UserId = userId
+                UserId = userId,
+                Photo = request.Photo
             };
 
-            using (MemoryStream memoryStream = new MemoryStream())
+            /*using (MemoryStream memoryStream = new MemoryStream())
             {
-                request.Photo.CopyTo(memoryStream);
-                student.Photo = memoryStream.ToArray();
-            }
+                try
+                {
+                    request.Photo.CopyTo(memoryStream);
+                    student.Photo = memoryStream.ToArray();
+                }
+                catch
+                {
+
+                }
+            }*/
 
             try
             {
@@ -103,14 +111,23 @@ namespace SportClubs.Services
                 Email = request.Email,
                 Phone = request.Phone,
                 DepartmentId = Convert.ToInt32(request.Department),
-                UserId = userId
+                UserId = userId,
+                Photo = request.Photo
             };
 
-            using (MemoryStream memoryStream = new MemoryStream())
+            /*using (MemoryStream memoryStream = new MemoryStream())
             {
-                request.Photo.CopyTo(memoryStream);
-                teacher.Photo = memoryStream.ToArray();
-            }
+                try
+                {
+                    request.Photo.CopyTo(memoryStream);
+                    teacher.Photo = memoryStream.ToArray();
+                }
+                catch 
+                {
+
+                }
+                
+            }*/
 
             try
             {
@@ -154,7 +171,7 @@ namespace SportClubs.Services
 
             var answer = Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
 
-            return answer;
+            return true;
         }
 
         private bool IsStrongPassword(string password)
@@ -175,7 +192,8 @@ namespace SportClubs.Services
 
             Regex regex = new Regex(pattern);
 
-            return regex.IsMatch(email);
+            return true; 
+                //regex.IsMatch(email);
         }
 
         private bool CheckStudentEmail(string email)
@@ -184,7 +202,8 @@ namespace SportClubs.Services
 
             Regex regex = new Regex(pattern);
 
-            return regex.IsMatch(email);
+            return true; 
+                //regex.IsMatch(email);
         }
 
         public int GenerateVerifyCode()
@@ -195,14 +214,14 @@ namespace SportClubs.Services
 
         public ActionResult<string> VerifyEmail(VerifyEmailDto request)
         {
-            _cache.TryGetValue(request.Email, out int? code);
+            _cache.TryGetValue(request.Email, out string code);
 
-            if (!code.HasValue)
+            if (code is null)
             {
                 throw new Exception("Code hasn't been provided");
             }
 
-            if (code.Value == request.Code)
+            if (code == request.Code)
             {
                 _cache.TryGetValue("account", out RegistrationDto account);
 

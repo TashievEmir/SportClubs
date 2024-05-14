@@ -82,14 +82,15 @@ namespace SportClubs.Services
                 {
                     Name = club.Name,
                     Description = club.Description,
-                    TeacherId = teacher.Id
+                    TeacherId = teacher.Id,
+                    Photo = club.Photo
                 };
 
-                using (MemoryStream memoryStream = new MemoryStream())
+                /*using (MemoryStream memoryStream = new MemoryStream())
                 {
                     club.Photo.CopyTo(memoryStream);
                     _club.Photo = memoryStream.ToArray();
-                }
+                }*/
 
                 try
                 {
