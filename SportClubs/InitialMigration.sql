@@ -166,33 +166,6 @@ INSERT INTO public."Departments"(
 "Name", "FacultyId")
 VALUES ('Экономика жана башкаруу программалары', 12);
 
-INSERT INTO public."Announcements"(
-"Title", "Description", "Photo", "Date")
-VALUES ( 'test title', 'test descr', E'\\x0123456789ABCDEF', CURRENT_DATE);
 
-INSERT INTO public."Clubs"(
-	"Name", "Description", "TeacherId")
-	VALUES ( 'Футбол', 'тест', 1);
-	
-	INSERT INTO public."Clubs"(
-	"Name", "Description", "TeacherId")
-	VALUES ( 'Баскетбол', 'тест', 2);
-	
-	INSERT INTO public."Clubs"(
-	"Name", "Description", "TeacherId")
-	VALUES ( 'Футбол', 'тест', 3);
-
-	INSERT INTO public."Schedules"(
-	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Place", "Auditorium", "StartTime", "EndTime", "ClubId")
-	VALUES (true, false, true, false, true, 'Футбол талаасы', 'тест', '17 hours 30 minutes', '19 hours 30 minutes', 1);
-	
-	INSERT INTO public."Schedules"(
-	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Place", "Auditorium", "StartTime", "EndTime", "ClubId")
-	VALUES (false, true, false, true, false, 'Спорт Зал', 'тест', '17 hours 30 minutes', '19 hours 30 minutes', 2);
-	
-	INSERT INTO public."Schedules"(
-	"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Place", "Auditorium", "StartTime", "EndTime", "ClubId")
-	VALUES (true, false, true, false, true, 'Воллейбол аянтчасы', 'тест', '17 hours 30 minutes', '19 hours 30 minutes', 3);
-	
 	
 
