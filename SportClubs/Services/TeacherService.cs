@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Interfaces;
+using SportClubs.Models;
 
 namespace SportClubs.Services
 {
@@ -53,9 +54,35 @@ namespace SportClubs.Services
             return _appDbContext.Teachers.AsNoTracking().FirstOrDefault(x => x.LastName == $"{fullName[0]} {fullName[1]}" && x.FirstName == fullName[2]);
         }
 
-        public List<Teacher> GetTeachers()
+        public List<TeachersReturnDto> GetTeachers()
         {
-            return _appDbContext.Teachers.AsNoTracking().ToList();
+            List<TeachersReturnDto> teachersReturnDtos = new List<TeachersReturnDto>();
+            var teachers = _appDbContext.Teachers.AsNoTracking().ToList();
+
+            foreach ( var teacher in teachers)
+            {
+                var club = _appDbContext.Clubs.FirstOrDefault(x => x.TeacherId == teacher.Id);
+                var department = _appDbContext.Departments.FirstOrDefault(x => x.Id == teacher.DepartmentId);
+                var faculty = _appDbContext.Faculties.FirstOrDefault(x => x.Id == department.FacultyId);
+
+                TeachersReturnDto teachersReturnDto = new TeachersReturnDto
+                {
+                    Id = teacher.Id,
+                    FirstName = teacher.FirstName,
+                    LastName = teacher.LastName,
+                    Photo = teacher.Photo,
+                    Phone = teacher.Phone,
+                    Email = teacher.Email,
+                    UserId = teacher.UserId,
+                    Club = club.Name,
+                    Faculty = faculty.Name,
+                    Department = department.Name
+                };
+
+                teachersReturnDtos.Add(teachersReturnDto);
+            }
+
+            return teachersReturnDtos;
         }
     }
 }
