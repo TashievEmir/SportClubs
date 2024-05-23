@@ -86,12 +86,6 @@ namespace SportClubs.Services
                     Photo = club.Photo
                 };
 
-                /*using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    club.Photo.CopyTo(memoryStream);
-                    _club.Photo = memoryStream.ToArray();
-                }*/
-
                 try
                 {
                     _context.Clubs.Add(_club);
@@ -132,6 +126,12 @@ namespace SportClubs.Services
         public Club GetClubByName(string name)
         {
             return _context.Clubs.AsNoTracking().FirstOrDefault(x => x.Name == name);
+        }
+
+        public Club GetClubByTeacherId(int teacherId)
+        {
+            var club = _context.Clubs.AsNoTracking().FirstOrDefault(x => x.TeacherId == teacherId);
+            return club;
         }
 
         public List<Club> GetClubs()

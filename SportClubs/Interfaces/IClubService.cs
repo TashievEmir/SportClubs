@@ -7,6 +7,7 @@ namespace SportClubs.Interfaces
     public interface IClubService
     {
         List<Club> GetClubs();
+        Club GetClubByTeacherId(int teacherId);
         List<Student> GetMembersByClubId(int clubId);
         Schedule GetTimetable(int clubId);
         ActionResult<string> ApplyToClub(ClubApplicationDto request);

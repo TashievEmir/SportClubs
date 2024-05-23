@@ -11,16 +11,24 @@ namespace SportClubs.Controllers
     {
         private readonly IClubService _clubService;
         private readonly IStudentService _studentService;
-        public ClubController( IClubService clubService, IStudentService studentService)
+        private readonly ITeacherService _teacherService;
+        public ClubController( IClubService clubService, IStudentService studentService, ITeacherService teacherService)
         {
             _clubService = clubService;
             _studentService = studentService;
+            _teacherService = teacherService;
         }
 
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
             return Ok(_clubService.GetClubs());
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetTeacherClub(int id)
+        {
+            return Ok(_clubService.GetClubByTeacherId(id));
         }
 
         [HttpGet]
