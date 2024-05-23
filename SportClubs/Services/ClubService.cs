@@ -130,7 +130,7 @@ namespace SportClubs.Services
 
         public Club GetClubByTeacherId(int teacherId)
         {
-            var club = _context.Clubs.AsNoTracking().FirstOrDefault(x => x.TeacherId == teacherId);
+            var club = _context.Clubs.AsNoTracking().FirstOrDefault(x => x.TeacherId == teacherId);11
             return club;
         }
 
