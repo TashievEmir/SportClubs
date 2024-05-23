@@ -128,9 +128,10 @@ namespace SportClubs.Services
             return _context.Clubs.AsNoTracking().FirstOrDefault(x => x.Name == name);
         }
 
-        public Club GetClubByTeacherId(int teacherId)
+        public Club GetClubByTeacherId(int userId)
         {
-            var club = _context.Clubs.AsNoTracking().FirstOrDefault(x => x.TeacherId == teacherId);11
+            var teacher = _context.Teachers.AsNoTracking().FirstOrDefault(x => x.UserId == userId);
+            var club = _context.Clubs.AsNoTracking().FirstOrDefault(x => x.TeacherId == teacher.Id);
             return club;
         }
 

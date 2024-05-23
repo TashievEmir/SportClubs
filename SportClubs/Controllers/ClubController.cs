@@ -26,9 +26,9 @@ namespace SportClubs.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetTeacherClub(int id)
+        public async Task<ActionResult> GetTeacherClub(int userId)
         {
-            return Ok(_clubService.GetClubByTeacherId(id));
+            return Ok(_clubService.GetClubByTeacherId(userId));
         }
 
         [HttpGet]
