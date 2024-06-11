@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MailKit.Security;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Text;
+using MimeKit;
 using SportClubs.Data;
 using SportClubs.Entities;
 using SportClubs.Interfaces;
@@ -15,11 +18,13 @@ namespace SportClubs.Services
             _context = context;
         }
 
-        public ActionResult<string> ApproveToClub(string email)
+        public ActionResult<string> ApproveToClub(string email, int clubId)
         {
             var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.Email == email);
 
-            var studentClub = _context.StudentClubs.FirstOrDefault(x => x.StudentId == student.Id);
+            var studentClub = _context.StudentClubs.FirstOrDefault(x => x.StudentId == student.Id && x.ClubId == clubId);
+
+            var club = _context.Clubs.FirstOrDefault(x => x.Id == clubId);
 
             if (studentClub is not null)
             {
@@ -36,7 +41,27 @@ namespace SportClubs.Services
                 throw new Exception(e.Message);
             }
 
+            string message = $"Сиз {club.Name} клубуна кабыл алындыңыз";
+            SendEmail(email, message);
+
             return new OkObjectResult("Student has been approved");
+        }
+
+        private void SendEmail(string mail, string message)
+        {
+            // create message
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("tes01.star@gmail.com"));
+            email.To.Add(MailboxAddress.Parse(mail));
+            email.Subject = "Title";
+            email.Body = new TextPart(TextFormat.Html) { Text = $"{message}" };
+
+            // send email
+            using var smtp = new MailKit.Net.Smtp.SmtpClient();
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate("tes01.star@gmail.com", "hwxrwoardwqjpdkn");
+            smtp.Send(email);
+            smtp.Disconnect(true);
         }
 
         public Student GetStudentByUserId(int id)
@@ -44,11 +69,13 @@ namespace SportClubs.Services
             return _context.Students.AsNoTracking().FirstOrDefault(x => x.UserId == id);
         }
 
-        public ActionResult<string> RejectFromClub(string email)
+        public ActionResult<string> RejectFromClub(string email, int clubId)
         {
             var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.Email == email);
 
-            var studentClub = _context.StudentClubs.FirstOrDefault(x => x.StudentId == (student == null ? 0 : student.Id));
+            var studentClub = _context.StudentClubs.FirstOrDefault(x => x.StudentId == (student == null ? 0 : student.Id)  && x.ClubId == clubId);
+
+            var club = _context.Clubs.FirstOrDefault(x => x.Id == clubId);
 
             try
             {
@@ -59,6 +86,9 @@ namespace SportClubs.Services
             {
                 throw new Exception(ex.Message);
             }
+
+            string message = $"Сиз {club.Name} клубуна кабыл алынган жоксуңуз!";
+            SendEmail(email, message);
 
             return new OkObjectResult("Student has been rejected succesfully");
         }

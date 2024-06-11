@@ -7,8 +7,8 @@ namespace SportClubs.Interfaces
     {
         Student GetStudentByUserId(int id);
         ActionResult<string> RemoveFromClub(string email);
-        ActionResult<string> ApproveToClub(string email);
-        ActionResult<string> RejectFromClub(string email);
+        ActionResult<string> ApproveToClub(string email, int clubId);
+        ActionResult<string> RejectFromClub(string email, int clubId);
         StudentClub GetStatusInClub(int userId, int clubId);
     }
 }

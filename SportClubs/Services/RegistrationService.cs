@@ -34,8 +34,8 @@ namespace SportClubs.Services
         public void Register(RegistrationDto user)
         {
             int code = GenerateVerifyCode();
-            _cache.Set(user.Email, code.ToString(), TimeSpan.FromMinutes(10));
-            _cache.Set("account", user, TimeSpan.FromMinutes(10));
+            _cache.Set(user.Email, code.ToString(), TimeSpan.FromMinutes(60));
+            _cache.Set("account", user, TimeSpan.FromMinutes(60));
 
             SendEmail(user.Email, code);
         }
@@ -74,19 +74,6 @@ namespace SportClubs.Services
                 Photo = request.Photo
             };
 
-            /*using (MemoryStream memoryStream = new MemoryStream())
-            {
-                try
-                {
-                    request.Photo.CopyTo(memoryStream);
-                    student.Photo = memoryStream.ToArray();
-                }
-                catch
-                {
-
-                }
-            }*/
-
             try
             {
                 _context.Students.Add(student);
@@ -114,20 +101,6 @@ namespace SportClubs.Services
                 UserId = userId,
                 Photo = request.Photo
             };
-
-            /*using (MemoryStream memoryStream = new MemoryStream())
-            {
-                try
-                {
-                    request.Photo.CopyTo(memoryStream);
-                    teacher.Photo = memoryStream.ToArray();
-                }
-                catch 
-                {
-
-                }
-                
-            }*/
 
             try
             {
@@ -171,7 +144,7 @@ namespace SportClubs.Services
 
             var answer = Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
 
-            return true;
+            return answer;
         }
 
         private bool IsStrongPassword(string password)
@@ -192,8 +165,7 @@ namespace SportClubs.Services
 
             Regex regex = new Regex(pattern);
 
-            return true; 
-                //regex.IsMatch(email);
+            return regex.IsMatch(email);
         }
 
         private bool CheckStudentEmail(string email)
@@ -202,8 +174,7 @@ namespace SportClubs.Services
 
             Regex regex = new Regex(pattern);
 
-            return true; 
-                //regex.IsMatch(email);
+            return regex.IsMatch(email);
         }
 
         public int GenerateVerifyCode()

@@ -8,7 +8,7 @@ namespace SportClubs.Interfaces
     {
         List<Club> GetClubs();
         Club GetClubByTeacherId(int teacherId);
-        List<Student> GetMembersByClubId(int clubId);
+        List<StudentReturnDto> GetMembersByClubId(int clubId);
         Schedule GetTimetable(int clubId);
         ActionResult<string> ApplyToClub(ClubApplicationDto request);
         ActionResult<string> AbandonClub(ClubApplicationDto request);

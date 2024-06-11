@@ -76,13 +76,13 @@ namespace SportClubs.Controllers
         [HttpPut]
         public async Task<ActionResult> ApproveStudent(StudentEmailDto student)
         {
-            return Ok(_studentService.ApproveToClub(student.Email));
+            return Ok(_studentService.ApproveToClub(student.Email, student.ClubId));
         }
 
         [HttpDelete("{studentEmail}")]
-        public async Task<ActionResult> RejectStudent(string studentEmail)
+        public async Task<ActionResult> RejectStudent(string studentEmail, int clubId)
         {
-            return Ok(_studentService.RejectFromClub(studentEmail));
+            return Ok(_studentService.RejectFromClub(studentEmail, clubId));
         }
 
         [HttpGet]

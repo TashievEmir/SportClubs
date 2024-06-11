@@ -140,14 +140,28 @@ namespace SportClubs.Services
             return _context.Clubs.AsNoTracking().ToList();
         }
 
-        public List<Student> GetMembersByClubId(int clubId)
+        public List<StudentReturnDto> GetMembersByClubId(int clubId)
         {
             var studentIds = _context.StudentClubs.Where(x => x.ClubId == clubId && x.Status == true).AsNoTracking().Select(x => x.StudentId).ToList();
-
-            List<Student> students = new List<Student>();
+            
+            List<StudentReturnDto> students = new List<StudentReturnDto>();
             foreach (var student in studentIds)
             {
-                students.Add(_context.Students.FirstOrDefault(x => x.Id == student));
+                var pupil = _context.Students.FirstOrDefault(x => x.Id == student);
+                var department = _context.Departments.FirstOrDefault(x => x.Id == pupil.DepartmentId);
+                var faculty = _context.Faculties.FirstOrDefault(x => x.Id == department.FacultyId);
+
+                students.Add(new StudentReturnDto
+                {
+                    Id = pupil.Id,
+                    LastName = pupil.LastName,
+                    FirstName = pupil.FirstName,
+                    Photo = pupil.Photo,
+                    Email = pupil.Email,
+                    Phone = pupil.Phone,
+                    FacultyName = faculty.Name,
+                    DepartmentName = department.Name
+                });
             }
             return students;
         }
