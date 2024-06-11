@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MailKit.Security;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Text;
+using MimeKit;
 using Org.BouncyCastle.Asn1.Ocsp;
 using SportClubs.Data;
 using SportClubs.Entities;
@@ -29,6 +32,7 @@ namespace SportClubs.Services
             var student = _studentService.GetStudentByUserId(user.Id);
             var club = GetClubByName(request.Club);
             var studentClub = _context.StudentClubs.AsNoTracking().FirstOrDefault(x => x.ClubId == club.Id && x.StudentId == student.Id);
+            var teacher = _context.Teachers.AsNoTracking().FirstOrDefault(x => x.Id == club.TeacherId);
 
             try
             {
@@ -40,6 +44,8 @@ namespace SportClubs.Services
                 throw new Exception($"{error.Message}");
             }
 
+            var message = $"{request.Club} клубундан {student.LastName} {student.FirstName} аттуу студент баш тартты";
+            SendEmail(teacher.Email, message);
 
             return new OkObjectResult("Your request done succesfully");
         }
@@ -49,6 +55,7 @@ namespace SportClubs.Services
             var user = _userService.GetUserByEmail(request.User);
             var student = _context.Students.FirstOrDefault(x => x.UserId == user.Id);
             var club = GetClubByName(request.Club);
+            var teacher = _context.Teachers.FirstOrDefault(x => x.Id == club.TeacherId);
 
             StudentClub studentClub = new StudentClub()
             {
@@ -69,7 +76,27 @@ namespace SportClubs.Services
                 throw new Exception($"{error.Message}");
             }
 
+            var message = $"{request.Club} клубуна {student.LastName} {student.FirstName} аттуу студент табыштама жөнөтү";
+            SendEmail(teacher.Email, message);
+
             return new OkObjectResult("Your request has been sent to teacher");
+        }
+
+        private void SendEmail(string mail, string message)
+        {
+            // create message
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("tes01.star@gmail.com"));
+            email.To.Add(MailboxAddress.Parse(mail));
+            email.Subject = "Title";
+            email.Body = new TextPart(TextFormat.Html) { Text = $"{message}" };
+
+            // send email
+            using var smtp = new MailKit.Net.Smtp.SmtpClient();
+            smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate("tes01.star@gmail.com", "hwxrwoardwqjpdkn");
+            smtp.Send(email);
+            smtp.Disconnect(true);
         }
 
         public ActionResult CreateClub(ClubCreationDto club)
