@@ -129,25 +129,43 @@ namespace SportClubs.Services
             throw new NotImplementedException("There is no such teacher");
         }
 
-        public List<Student> GetCandidates(int clubId)
+        public List<StudentReturnDto> GetCandidates(int clubId)
         {
             List<StudentClub> candidates = new List<StudentClub>();
             List<Student> students = new List<Student>();
+            List<StudentReturnDto> result = new List<StudentReturnDto>();
             try
             {
                 candidates = _context.StudentClubs.Where(x => x.Status == false && x.ClubId == clubId).AsNoTracking().ToList();
-                foreach(var item in candidates)
+                foreach (var item in candidates)
                 {
-                    var student = _context.Students.AsNoTracking().FirstOrDefault(x => x.Id == item.StudentId);
-                    students.Add(student);
+                    students.Add(_context.Students.FirstOrDefault(x => x.Id == item.StudentId));
                 }
-                
+
+                foreach (var item in students)
+                {
+                    var department = _context.Departments.AsNoTracking().FirstOrDefault(y => y.Id == item.DepartmentId);
+                    var facluty = _context.Faculties.AsNoTracking().FirstOrDefault(x => x.Id == department.FacultyId);
+
+                    result.Add(new StudentReturnDto
+                    {
+                        Id = item.Id,
+                        LastName = item.LastName,
+                        FirstName = item.FirstName,
+                        Email = item.Email,
+                        Photo = item.Photo,
+                        Phone = item.Phone,
+                        FacultyName = facluty.Name,
+                        DepartmentName = department.Name
+                    });
+                }
+
             }
             catch (Exception error)
             {
                 throw new NotImplementedException("Can't get candidates");
             }
-            return students;
+            return result;
         }
 
         public Club GetClubByName(string name)
