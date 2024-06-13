@@ -140,7 +140,7 @@ namespace SportClubs.Services
 
         private bool CheckValidManasEmail(string email)
         {
-            string pattern = @"^[A-Za-z0-9._%+-]+@manas\.edu\.kg$";
+            string pattern = @"^[A-Za-z0-9._%+-]+@(manas\.edu\.kg|gmail\.com)$";
 
             var answer = Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
 
@@ -161,7 +161,7 @@ namespace SportClubs.Services
 
         private bool CheckTeacherEmail(string email)
         {
-            string pattern = @"^[a-zA-Z.]+@manas\.edu\.kg$";
+            string pattern = @"^[a-zA-Z.]+@(manas\.edu\.kg|gmail\.com)$$";
 
             Regex regex = new Regex(pattern);
 

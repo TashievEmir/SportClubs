@@ -74,7 +74,7 @@ namespace SportClubs.Services
                     Phone = teacher.Phone,
                     Email = teacher.Email,
                     UserId = teacher.UserId,
-                    Club = club.Name,
+                    Club = club is not null ? club.Name : "Клуб бериле элек",
                     Faculty = faculty.Name,
                     Department = department.Name
                 };
