@@ -115,10 +115,10 @@ namespace SportClubs.Services
 
         public void RegisterUser(RegistrationDto request, Role role)
         {
-            /*if (!IsStrongPassword(request.Password))
+            if (!IsStrongPassword(request.Password))
             {
                 throw new Exception("Password is not strong");
-            }*/
+            }
 
             User user = new User()
             {
@@ -140,7 +140,7 @@ namespace SportClubs.Services
 
         private bool CheckValidManasEmail(string email)
         {
-            string pattern = @"^[A-Za-z0-9._%+-]+@(manas\.edu\.kg|gmail\.com)$";
+            string pattern = @"^[A-Za-z0-9._%+-]+@manas\.edu\.kg$";
 
             var answer = Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
 
@@ -149,7 +149,7 @@ namespace SportClubs.Services
 
         private bool IsStrongPassword(string password)
         {
-            string pattern = @"^(?=.*[A-Za-z])(?=.*\d).{6,}$";
+            string pattern = @"^.{6,}$";
 
             return Regex.IsMatch(password, pattern);
         }
@@ -161,7 +161,7 @@ namespace SportClubs.Services
 
         private bool CheckTeacherEmail(string email)
         {
-            string pattern = @"^[a-zA-Z.]+@(manas\.edu\.kg|gmail\.com)$$";
+            string pattern = @"^[a-zA-Z.]+@manas\.edu\.kg$";
 
             Regex regex = new Regex(pattern);
 
